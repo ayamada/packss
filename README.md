@@ -29,7 +29,7 @@ ss => (#<Atom@1bc865a: 1> #<Atom@1bc865a: 1>)
 ss => (#<Atom@1bc865a: 2> #<Atom@1bc865a: 2>)
 
 (def serialized (pr-str (packss/pack ss)))
-(def deserialized (packss/unpack (edn/read-str serialized)))
+(def deserialized (packss/unpack (edn/read-string serialized)))
 deserialized => (#<Atom@11a6cc4: 2> #<Atom@11a6cc4: 2>)
 (reset! (first deserialized) 3)
 deserialized => (#<Atom@11a6cc4: 3> #<Atom@11a6cc4: 3>)
