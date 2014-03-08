@@ -127,7 +127,10 @@
                         mapped-obj)]
           (map->record (symbol mtype) m))
         (catch Throwable e
-          (throw (RuntimeException. (str "cannot unmap: " mtype))))))))
+          (throw (ex-info "cannot unmap object" {:obj mapped-obj
+                                                 :mtype mtype
+                                                 :exception e
+                                                 })))))))
 
 (defn- replacing! [obj mtype]
   (if-let [ext-replacer (:replacer (ext mtype))]
