@@ -122,6 +122,8 @@
       ))
   )
 
+
+
 (def user-ext-table
   (make-packss-table
     [Point (fn [p] [(.x p) (.y p)]) #(Point. (first %) (second %))]
@@ -136,6 +138,22 @@
    :rectangle (Rectangle. -1 -2 3 4)
    })
 
+(def nil-filtered-user-ext-data
+  {:data [1 :b 'c "4"]
+   :point nil
+   :rectangle nil
+   })
+
+(defn inspector [obj]
+  ;(prn (packable? obj) (class obj))
+  (when-not (packable? obj)
+    (throw (ex-info "cannot serialize" {:obj obj})))
+  obj)
+
+(defn nil-filter [obj]
+  (when (packable? obj)
+    obj))
+
 (deftest ext-test
   (testing "user-ext test"
     (is (thrown? RuntimeException
@@ -144,18 +162,13 @@
       (is (= user-ext-data
              (unpack (edn/read-string dumped) user-ext-table))))))
 
-(defn inspector [obj]
-  ;(prn (packable? obj) (class obj))
-  (when-not (packable? obj)
-    (throw (ex-info "cannot serialize" {:obj obj})))
-  obj)
-
 (deftest scanner-test
   (testing "user-scanner inspect test"
     (is (thrown? clojure.lang.ExceptionInfo
                  (pack user-ext-data nil inspector))))
-  ;(testing "user-scanner convert test"
-  ;  (is (= ext-data (unpack (pack user-ext-data nil scanner2)))))
+  (testing "user-scanner convert test"
+    (is (= (unpack (pack user-ext-data nil nil-filter))
+           nil-filtered-user-ext-data)))
   )
 
 
