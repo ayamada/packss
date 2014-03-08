@@ -81,7 +81,6 @@ deserialized => (#<Atom@11a6cc4: 3> #<Atom@11a6cc4: 3>)
 
 Copyright c 2014 ayamada
 
-Distributed under the Eclipse Public License either version 1.0 or (at
-your option) any later version.
+Distributed under the Eclipse Public License version 1.0
 
 
