@@ -9,6 +9,11 @@
 (def stress-data
   ;; remove unsupported objects and uncomparable objects
   (dissoc nippy/stress-data
+          :throwable :ex-info :exception :stress-record))
+
+(def stress-data-without-array
+  ;; remove unsupported objects, uncomparable objects and array
+  (dissoc nippy/stress-data
           :throwable :ex-info :exception :stress-record :bytes))
 
 (def record-data {:stress-record (:stress-record nippy/stress-data)})
@@ -24,7 +29,7 @@
    :long-array (long-array (map long [1 2 3]))
    :float-array (float-array (map float [1 2 3]))
    :double-array (double-array (map double [1 2 3]))
-   :object-array (object-array [4 'a :b "ccc" stress-data])
+   :object-array (object-array [4 'a :b "ccc" stress-data-without-array])
    :nested (atom (atom 3))
    })
 
@@ -33,13 +38,19 @@
 (def circular-data (atom (object-array [0 nil 2])))
 (aset ^"[Ljava.lang.Object;" @circular-data 1 circular-data)
   
+(defn array= [a b]
+  (or
+    (= a b)
+    ;; TODO: implicit check array
+    (= (seq a) (seq b))))
+
 (deftest stress-test
   (testing "pack->unpack stress-data"
     (is (doall
           (map
             (fn [[k v]]
               (let [v2 (unpack (pack v))]
-                (when-not (= v v2)
+                (when-not (array= v v2)
                   (prn "cannot match" k v v2)
                   (throw (Exception. "cannot match")))))
             stress-data)))
