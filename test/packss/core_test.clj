@@ -124,6 +124,8 @@
 
 
 
+(defrecord R [a b c])
+
 (def user-ext-table
   (make-packss-table
     [Point (fn [p] [(.x p) (.y p)]) #(Point. (first %) (second %))]
@@ -134,12 +136,14 @@
 
 (def user-ext-data
   {:data [1 :b 'c "4"]
+   :record (->R 1 2 3)
    :point (Point. 1 2)
    :rectangle (Rectangle. -1 -2 3 4)
    })
 
 (def nil-filtered-user-ext-data
   {:data [1 :b 'c "4"]
+   :record (->R 1 2 3)
    :point nil
    :rectangle nil
    })
