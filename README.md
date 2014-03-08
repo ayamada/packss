@@ -38,7 +38,7 @@ deserialized => (#<Atom@11a6cc4: 3> #<Atom@11a6cc4: 3>)
 
 ## Can to do
 
-- Can treat shared-structure
+- Can treat shared-structure (including cyclic-structure without lazy-seq)
     - See [srfi-38](http://srfi.schemers.org/srfi-38/srfi-38.html)
       for what is shared-structure.
 
