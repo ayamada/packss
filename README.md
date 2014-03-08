@@ -13,7 +13,7 @@ This is to support to serialize/deserialize module.
 
 ## Install
 
-https://clojars.org/packss
+- https://clojars.org/packss
 
 
 ## Usage
