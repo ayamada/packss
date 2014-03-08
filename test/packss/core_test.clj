@@ -144,3 +144,19 @@
       (is (= user-ext-data
              (unpack (edn/read-string dumped) user-ext-table))))))
 
+(defn inspector [obj]
+  ;(prn (packable? obj) (class obj))
+  (when-not (packable? obj)
+    (throw (ex-info "cannot serialize" {:obj obj})))
+  obj)
+
+(deftest scanner-test
+  (testing "user-scanner inspect test"
+    (is (thrown? clojure.lang.ExceptionInfo
+                 (pack user-ext-data nil inspector))))
+  ;(testing "user-scanner convert test"
+  ;  (is (= ext-data (unpack (pack user-ext-data nil scanner2)))))
+  )
+
+
+
