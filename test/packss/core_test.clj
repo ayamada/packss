@@ -138,6 +138,9 @@
 
 (deftest ext-test
   (testing "user-ext test"
-    (let [dumped (pack user-ext-data user-ext-table)]
-      (is (= user-ext-data (unpack dumped user-ext-table))))))
+    (is (thrown? RuntimeException
+                 (edn/read-string (pr-str (pack user-ext-data)))))
+    (let [dumped (pr-str (pack user-ext-data user-ext-table))]
+      (is (= user-ext-data
+             (unpack (edn/read-string dumped) user-ext-table))))))
 
