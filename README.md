@@ -76,6 +76,12 @@ deserialized => (#<Atom@11a6cc4: 3> #<Atom@11a6cc4: 3>)
 - `idx`(`index`)
     - `pack` generate a vector. All entities are numbered.
 
+- `ext`(`user-ext`)
+    - `pack`/`unpack`'s optional arg, additional defines for `pack`/`unpack`.
+
+- `scanner`
+    - `pack`'s optional arg, check/substitute individual object.
+
 
 ## License
 
