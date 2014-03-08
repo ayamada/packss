@@ -83,6 +83,20 @@ deserialized => (#<Atom@11a6cc4: 3> #<Atom@11a6cc4: 3>)
     - `pack`'s optional arg, check/substitute individual object.
 
 
+## FAQ
+
+- I want to `pack` instances of unsupported classes.
+    - Use `make-packss-table`. See `test/packss/core_test.clj`.
+    - If you want to `pack` class include clojure object recursively,
+      you shall use `obj->idx` and `idx->obj`.
+      See `built-in-packss-table` in `src/packss/core.clj`.
+
+- `pack` don't check unserializable object! It's useless!
+    - You may use `scanner`. It can check/substitute unsafe object.
+      See `test/packss/core_test.clj` and `src/packss/core.clj`.
+      ** Unsafe objects are remained and never checked by default !!! **
+
+
 ## License
 
 Copyright c 2014 ayamada
