@@ -94,7 +94,7 @@ deserialized => (#<Atom@11a6cc4: 3> #<Atom@11a6cc4: 3>)
 - `pack` don't check unserializable object! It's useless!
     - You may use `scanner`. It can check/substitute unsafe object.
       See `test/packss/core_test.clj` and `src/packss/core.clj`.
-      ** Unsafe objects are remained and never checked by default !!! **
+      **Unsafe objects are remained and never checked by default !!!**
 
 
 ## License
