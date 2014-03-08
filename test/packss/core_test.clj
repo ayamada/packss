@@ -124,8 +124,7 @@
 
 
 
-(defrecord R [a b c])
-
+;;; TODO: add class include clojure object, for example
 (def user-ext-table
   (make-packss-table
     [Point (fn [p] [(.x p) (.y p)]) #(Point. (first %) (second %))]
@@ -133,6 +132,8 @@
      (fn [r] [(.x r) (.y r) (.width r) (.height r)])
      #(Rectangle. (first %) (second %) (nth % 2) (nth % 3))]
     ))
+
+(defrecord R [a b c])
 
 (def user-ext-data
   {:data [1 :b 'c "4"]
