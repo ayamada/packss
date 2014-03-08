@@ -4,6 +4,15 @@
 
 
 ;;; ----------------------------------------------------------------
+;;; class utility
+
+(def ^:dynamic packable-classes
+  (filter identity (map first (methods print-dup))))
+
+(defn packable? [obj]
+  (some #(instance? % obj) packable-classes))
+
+;;; ----------------------------------------------------------------
 ;;; defrecord utility
 
 (defn record? [obj]
