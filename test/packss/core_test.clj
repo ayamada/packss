@@ -9,12 +9,12 @@
 (def stress-data
   ;; remove unsupported objects and uncomparable objects
   (dissoc nippy/stress-data
-          :throwable :ex-info :exception :stress-record))
+          :throwable :ex-info :exception))
 
 (def stress-data-without-array
   ;; remove unsupported objects, uncomparable objects and array
   (dissoc nippy/stress-data
-          :throwable :ex-info :exception :stress-record :bytes))
+          :throwable :ex-info :exception :bytes))
 
 (def record-data {:stress-record (:stress-record nippy/stress-data)})
 
