@@ -29,6 +29,18 @@
 (defn map->record [class-symbol m]
   (map->record* (resolve class-symbol) m))
 
+;;; ----------------------------------------------------------------
+;;; scanner utility
+
+(defn inspect-unpackable-obj [obj]
+  ;(prn (packable? obj) (class obj))
+  (when-not (packable? obj)
+    (throw (ex-info "cannot pack" {:obj obj})))
+  obj)
+
+(defn substitute-nil-for-unpackable-obj [obj]
+  (when (packable? obj)
+    obj))
 
 ;;; ----------------------------------------------------------------
 
