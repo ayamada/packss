@@ -11,6 +11,11 @@ pack/unpack shared-structure
 This is to support to serialize/deserialize module.
 
 
+## Install
+
+https://clojars.org/packss
+
+
 ## Usage
 
 ~~~
