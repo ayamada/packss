@@ -1,4 +1,5 @@
 (ns packss.core-test
+  (:import [java.awt Point Rectangle])
   (:require [clojure.test :refer :all]
             [packss.core :refer :all]
             [taoensso.nippy :as nippy]
@@ -120,4 +121,23 @@
       (is (= @target @(aget ^"[Ljava.lang.Object;" @target 1)))
       ))
   )
+
+(def user-ext-table
+  (make-packss-table
+    [Point (fn [p] [(.x p) (.y p)]) #(Point. (first %) (second %))]
+    [Rectangle
+     (fn [r] [(.x r) (.y r) (.width r) (.height r)])
+     #(Rectangle. (first %) (second %) (nth % 2) (nth % 3))]
+    ))
+
+(def user-ext-data
+  {:data [1 :b 'c "4"]
+   :point (Point. 1 2)
+   :rectangle (Rectangle. -1 -2 3 4)
+   })
+
+(deftest ext-test
+  (testing "user-ext test"
+    (let [dumped (pack user-ext-data user-ext-table)]
+      (is (= user-ext-data (unpack dumped user-ext-table))))))
 
