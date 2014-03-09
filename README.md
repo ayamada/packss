@@ -45,7 +45,7 @@ deserialized => (#<Atom@11a6cc4: 3> #<Atom@11a6cc4: 3>)
 - Can `pack` to Clojure's map, set, seq, coll, **defrecord**,
   **atom**, **ref**, and **Java's array**
 
-- Can `pack` your object if you set `mapper`, `unmapper`, and `replacer`
+- Can `pack` any your objects if you set `mapper`, `unmapper`, and `replacer`
 
 - Can filter/scan all objects in structure
 
