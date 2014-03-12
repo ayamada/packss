@@ -103,6 +103,14 @@ deserialized => (#<Atom@11a6cc4: 3> #<Atom@11a6cc4: 3>)
       **Unsafe objects are remained and never checked by default !!!**
 
 
+## ChangeLog
+
+0.2.0 (2014-03-12)
+:    Discriminate `list` and `vector` from `seq` strictly
+0.1.0 (2014-03-08)
+:    Initial release
+
+
 ## License
 
 Copyright c 2014 ayamada
