@@ -1,4 +1,4 @@
-(defproject packss "0.1.1-SNAPSHOT"
+(defproject packss "0.2.0"
   :description "pack/unpack shared-structure"
   :url "https://github.com/ayamada/packss"
   :license {:name "Eclipse Public License"
