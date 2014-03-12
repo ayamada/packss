@@ -34,6 +34,11 @@
    :nested (atom (atom 3))
    })
 
+(def seq-data
+  {:list '(1 2 3 a b c)
+   :vec [4 5 6 :x :y :z]
+   })
+
 (def isomorphic-data (list mutable-data mutable-data))
 
 (def circular-data (atom (object-array [0 nil 2])))
@@ -82,6 +87,16 @@
       (is (= (seq (:object-array original)) (seq (:object-array target))))
       (is (= @@(:nested original) @@(:nested target)))
       ))
+  (testing "pack->unpack seq-data"
+    (let [original seq-data
+          target (unpack (pack seq-data))]
+      (is (= (:list original) (:list target)))
+      (is (list? (:list original)))
+      (is (list? (:list target)))
+      (is (= (:vec original) (:vec target)))
+      (is (vector? (:vec original)))
+      (is (vector? (:vec target)))
+      ))
   (testing "edn-safe?"
     (are [m] (doall
                (map
@@ -94,11 +109,13 @@
                  m))
       stress-data
       record-data
-      mutable-data)
+      mutable-data
+      seq-data)
     (are [m] (edn/read-string (pr-str (pack m)))
       stress-data
       record-data
-      mutable-data)
+      mutable-data
+      seq-data)
     )
   (testing "isomorphic?"
     (let [target (unpack (pack isomorphic-data))

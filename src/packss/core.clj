@@ -117,6 +117,8 @@
                               (conj prev (obj->idx one)))
                             #{}
                             obj) :set]
+        (list? obj) [(doall (map obj->idx obj)) :list]
+        (vector? obj) [(doall (map obj->idx obj)) :vector]
         (seq? obj) [(doall (map obj->idx obj)) :seq]
         (coll? obj) [(doall (map obj->idx obj)) :coll]
         :else (if-let [packss-entry (built-in-packss-table class-name)]
@@ -134,6 +136,8 @@
                    (conj prev (idx->obj one)))
                  #{}
                  mapped-obj)
+    :list (apply list (doall (map idx->obj mapped-obj)))
+    :vector (vec (doall (map idx->obj mapped-obj)))
     :seq (doall (map idx->obj mapped-obj))
     :coll (vec (doall (map idx->obj mapped-obj)))
     (if-let [packss-entry (or

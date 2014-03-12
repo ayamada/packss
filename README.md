@@ -42,7 +42,7 @@ deserialized => (#<Atom@11a6cc4: 3> #<Atom@11a6cc4: 3>)
     - See [srfi-38](http://srfi.schemers.org/srfi-38/srfi-38.html)
       for what is shared-structure.
 
-- Can `pack` to Clojure's map, set, seq, coll, **defrecord**,
+- Can `pack` to Clojure's map, set, list, vector, seq, coll, **defrecord**,
   **atom**, **ref**, and **Java's array**
 
 - Can `pack` any your objects if you set `mapper`, `unmapper`, and `replacer`
@@ -53,7 +53,7 @@ deserialized => (#<Atom@11a6cc4: 3> #<Atom@11a6cc4: 3>)
 ## Cannot to do
 
 - Cannot genuine serialization
-    - `pack` generate `vector` of clojure.
+    - `pack` generate `vector` of Clojure.
       You may use packss with another serialize libraries, for example,
       [edn](http://clojure.github.io/clojure/clojure.edn-api.html),
       [nippy](https://github.com/ptaoussanis/nippy),
