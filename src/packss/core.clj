@@ -1,4 +1,5 @@
 (ns packss.core
+  (:refer-clojure :exclude [record?])
   (:import (java.lang.reflect Method))
   )
 
