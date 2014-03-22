@@ -5,6 +5,8 @@
 
 pack/unpack shared-structure
 
+**WARNING: 0.2.0 include critical bug. Please wait to 0.3.0 .**
+
 
 ## What is this
 
