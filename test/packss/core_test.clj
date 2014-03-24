@@ -183,5 +183,21 @@
            nil-filtered-user-ext-data)))
   )
 
+(def ssd-data
+  (let [a (Point. 1 2)
+        b (Point. 1 2)]
+    {:a-1 a
+     :a-2 a
+     :b b
+     }))
+
+(deftest shared-structure-determine-test
+  (testing "shared-structure determine test"
+    (let [loaded-data (unpack (pack ssd-data user-ext-table) user-ext-table)]
+      (set! (.x ^Point (:a-1 loaded-data)) 3)
+      (is (= (.x ^Point (:a-1 loaded-data)) 3))
+      (is (= (.x ^Point (:a-2 loaded-data)) 3))
+      (is (= (.x ^Point (:b loaded-data)) 1)))))
+
 
 
