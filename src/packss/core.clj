@@ -5,15 +5,6 @@
 
 
 ;;; ----------------------------------------------------------------
-;;; class utility
-
-(def ^:dynamic packable-classes
-  (filter identity (map first (methods print-dup))))
-
-(defn packable? [obj]
-  (some #(instance? % obj) packable-classes))
-
-;;; ----------------------------------------------------------------
 ;;; defrecord utility
 
 (defn record? [obj]
@@ -29,19 +20,6 @@
     (.invoke method nil (into-array [m]))))
 (defn map->record [class-symbol m]
   (map->record* (resolve class-symbol) m))
-
-;;; ----------------------------------------------------------------
-;;; scanner utility
-
-(defn inspect-unpackable-obj [obj]
-  ;(prn (packable? obj) (class obj))
-  (when-not (packable? obj)
-    (throw (ex-info "cannot pack" {:obj obj})))
-  obj)
-
-(defn substitute-nil-for-unpackable-obj [obj]
-  (when (packable? obj)
-    obj))
 
 ;;; ----------------------------------------------------------------
 
@@ -95,6 +73,51 @@
     [clojure.lang.Ref #(obj->idx @%) ref #(dosync (alter % idx->obj))]
     ))
 
+
+;;; ----------------------------------------------------------------
+;;; class utility
+
+(def ^:dynamic base-packable-classes
+  (let [whitelist []
+        blacklist [clojure.lang.Var
+                   java.sql.Timestamp
+                   clojure.lang.Fn
+                   java.util.Calendar
+                   clojure.lang.Namespace
+                   java.util.regex.Pattern
+                   java.util.UUID
+                   java.lang.Class
+                   java.util.Date
+                   ]
+        print-dupables (set (filter identity (map first (methods print-dup))))]
+    (into (apply disj print-dupables blacklist) whitelist)))
+
+(defn unmemoized-class-packable? [^Class a-class & [user-ext]]
+  (let [class-name (.getName a-class)]
+    (or
+      (and user-ext (user-ext class-name))
+      (built-in-packss-table class-name)
+      (some #(.isAssignableFrom ^Class % a-class) base-packable-classes))))
+
+(def class-packable? (memoize unmemoized-class-packable?))
+
+(defn packable? [obj & [user-ext]]
+  (if (nil? obj)
+    true
+    (class-packable? (class obj) user-ext)))
+
+;;; ----------------------------------------------------------------
+;;; scanner utility
+
+(defn inspect-unpackable-obj [obj & [user-ext]]
+  ;(prn (packable? obj user-ext) (class obj))
+  (when-not (packable? obj user-ext)
+    (throw (ex-info "cannot pack" {:obj obj, :user-ext user-ext})))
+  obj)
+
+(defn substitute-nil-for-unpackable-obj [obj & [user-ext]]
+  (when (packable? obj user-ext)
+    obj))
 
 ;;; ----------------------------------------------------------------
 
