@@ -5,8 +5,6 @@
 
 pack/unpack shared-structure
 
-**WARNING: 0.2.0 include critical bug. Please wait to 0.3.0 .**
-
 
 ## What is this
 
@@ -106,6 +104,11 @@ deserialized => (#<Atom@11a6cc4: 3> #<Atom@11a6cc4: 3>)
 
 
 ## ChangeLog
+
+- 0.3.0 (2014-03-24)
+    - Fix over-sharing bug
+        - See `shared-structure-determine-test`
+          in `test/packss/core_test.clj`, this test didn't pass in past.
 
 - 0.2.0 (2014-03-12)
     - Discriminate `list` and `vector` from `seq` strictly
