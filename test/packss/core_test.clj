@@ -183,6 +183,33 @@
            nil-filtered-user-ext-data)))
   )
 
+(deftest packable-test
+  (testing "packable? test"
+    ;(prn base-packable-classes) ; for debug
+    (is (packable? nil))
+    (is (packable? 1))
+    (is (packable? 1.1))
+    (is (packable? \a))
+    (is (packable? "b"))
+    (is (packable? 'c))
+    (is (packable? :d))
+    (is (packable? {:a :b}))
+    (is (packable? #{:c :d}))
+    (is (packable? [0]))
+    (is (packable? '(a b c)))
+    (is (packable? (take 3 (repeat "zzz"))))
+    (is (packable? (int-array [1])))
+    (is (packable? (object-array [[[[[[2]]]]]])))
+    (is (packable? (atom :z)))
+    (is (packable? (ref 1)))
+    (is (packable? (->R 1 2 3)))
+    (is (not (packable? (Point. 1 2))))
+    (is (not (packable? (class class))))
+    (is (packable? nil user-ext-table))
+    (is (packable? (Point. 1 2) user-ext-table))
+    (is (not (packable? (class class) user-ext-table)))
+    ))
+
 (def ssd-data
   (let [a (Point. 1 2)
         b (Point. 1 2)]
