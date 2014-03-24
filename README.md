@@ -105,6 +105,10 @@ deserialized => (#<Atom@11a6cc4: 3> #<Atom@11a6cc4: 3>)
 
 ## ChangeLog
 
+- 1.0.0 (2014-03-25)
+    - Fix `packable?` incorrectness
+    - Rename `packable-classes` to `base-packable-classes`
+
 - 0.3.0 (2014-03-24)
     - Fix over-sharing bug
         - See `shared-structure-determine-test`
