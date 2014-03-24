@@ -191,12 +191,19 @@
      :b b
      }))
 
+;;; NB: (= (Point. 1 2) (Point. 1 2)) => true
+;;;     (identical? (Point. 1 2) (Point. 1 2)) => false
+;;;     #{(Point. 1 2), (Point. 1 2)} => exception
 (deftest shared-structure-determine-test
   (testing "shared-structure determine test"
     (let [loaded-data (unpack (pack ssd-data user-ext-table) user-ext-table)]
-      (set! (.x ^Point (:a-1 loaded-data)) 3)
-      (is (= (.x ^Point (:a-1 loaded-data)) 3))
-      (is (= (.x ^Point (:a-2 loaded-data)) 3))
+      (set! (.x ^Point (:a-1 ssd-data)) 3)
+      (set! (.x ^Point (:a-1 loaded-data)) 4)
+      (is (= (.x ^Point (:a-1 ssd-data)) 3))
+      (is (= (.x ^Point (:a-2 ssd-data)) 3))
+      (is (= (.x ^Point (:b ssd-data)) 1))
+      (is (= (.x ^Point (:a-1 loaded-data)) 4))
+      (is (= (.x ^Point (:a-2 loaded-data)) 4))
       (is (= (.x ^Point (:b loaded-data)) 1)))))
 
 
