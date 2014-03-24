@@ -165,18 +165,26 @@
       (replacer obj))))
 
 
-
+;;; NB: cache(map) cannot distinguish Java instance of same value
+;;;     (e.g. java.awt.Point).
+;;;     Because it preserve by linear.
 (defn obj->idx [src-obj]
   ;; TODO: must be safe from stack overflow
-  (if-let [idx (cache src-obj)]
-    idx
-    (let [idx (count stack)
-          scanned (scanner src-obj)
-          ]
-      (set! stack (conj stack (delay (mapping scanned)))) ; reserve to entry
-      (set! cache (assoc cache src-obj idx))
-      (force (stack idx))
-      idx)))
+  (let [entries (cache src-obj)]
+    (if-let [idx (when entries
+                   (first (filter identity
+                                  (map (fn [[k v]]
+                                         (and (identical? src-obj k) v))
+                                       entries))))]
+      idx
+      (let [idx (count stack)
+            scanned (scanner src-obj)
+            cache-entry-old (or entries nil)
+            cache-entry-new (conj cache-entry-old [src-obj idx])]
+        (set! cache (assoc cache src-obj cache-entry-new))
+        (set! stack (conj stack (delay (mapping scanned)))) ; reserve to entry
+        (force (stack idx))
+        idx))))
 
 (defn idx->obj [idx]
   ;; TODO: must be safe from stack overflow
