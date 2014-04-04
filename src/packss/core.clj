@@ -23,9 +23,9 @@
 
 ;;; ----------------------------------------------------------------
 
-(def current-protocol "PACKSS/0.1")
+(def current-protocol "PACKSS/1.1")
 
-;;; (stack 0) => {:protocol "PACKSS/0.1", ...} ; meta-info
+;;; (stack 0) => {:protocol "PACKSS/1.1", ...} ; meta-info
 ;;; (stack 1) => [mapped-obj "obj-type"] ; 1 is root
 ;;; (stack 2) => [mapped-obj "obj-type"] ; 2 and others are children
 ;;; (stack 3) => ...
@@ -239,7 +239,7 @@
 (defn unpack [packed & [user-ext]]
   ;; TODO: must be thread safe
   (let [meta-info (packed 0)]
-    ;; TODO: check protocol
+    ;; TODO: check protocol and support old version
     (binding [stack packed
               cache {}
               ext (or user-ext {})]
