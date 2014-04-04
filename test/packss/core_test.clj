@@ -233,5 +233,22 @@
       (is (= (.x ^Point (:a-2 loaded-data)) 4))
       (is (= (.x ^Point (:b loaded-data)) 1)))))
 
+(defn- get-version []
+  (nth (edn/read-string (slurp "project.clj")) 2))
+
+(deftest measure-test
+  (testing "measure test"
+    (println)
+    (println "date:" (str (java.util.Date.)))
+    (println "version:" (get-version))
+    (let [src-data (repeat 100 mutable-data)
+          _ (print "measure pack time: ")
+          dumped (pr-str (time (pack src-data)))
+          _ (println "measure dumped size:" (alength (.getBytes dumped)))
+          _ (print "measure unpack time: ")
+          dst-data (edn/read-string dumped)
+          restored (time (unpack dst-data))
+          ]
+      nil)))
 
 
