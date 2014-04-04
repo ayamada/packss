@@ -23,11 +23,11 @@
 
 ;;; ----------------------------------------------------------------
 
-(def current-protocol "PACKSS/1.1")
+(def current-protocol "PACKSS/1.0")
 
-;;; (stack 0) => {:protocol "PACKSS/1.1", ...} ; meta-info
-;;; (stack 1) => [mapped-obj "obj-type"] ; 1 is root
-;;; (stack 2) => [mapped-obj "obj-type"] ; 2 and others are children
+;;; (stack 0) => {:protocol "PACKSS/1.0", ...} ; meta-info
+;;; (stack 1) => [mapped-obj obj-type] ; 1 is root
+;;; (stack 2) => [mapped-obj obj-type] ; 2 and others are children
 ;;; (stack 3) => ...
 (declare ^:private ^:dynamic stack)
 (declare ^:private ^:dynamic cache) ; {obj idx, ...} or {idx obj, ...}
@@ -195,10 +195,9 @@
   ;; TODO: must be safe from stack overflow
   (let [entries (cache src-obj)]
     (if-let [idx (when entries
-                   (first (filter identity
-                                  (map (fn [[k v]]
-                                         (and (identical? src-obj k) v))
-                                       entries))))]
+                   (some (fn [[k v]]
+                           (and (identical? src-obj k) v))
+                         entries))]
       idx
       (let [idx (count stack)
             scanned (scanner src-obj)
