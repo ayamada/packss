@@ -57,10 +57,10 @@
 ;;; internal translate table
 (def ^:private built-in-packss-table
   (make-packss-table
-    [(class (boolean-array 0)) seq boolean-array]
-    [(class (byte-array 0)) seq byte-array]
-    [(class (short-array 0)) seq short-array]
-    [(class (char-array 0)) seq char-array]
+    [(class (boolean-array 0)) seq #(boolean-array (map (comp not not) %))]
+    [(class (byte-array 0)) seq #(byte-array (map byte %))]
+    [(class (short-array 0)) seq #(short-array (map short %))]
+    [(class (char-array 0)) seq #(char-array (map char %))]
     [(class (int-array 0)) seq int-array]
     [(class (long-array 0)) seq long-array]
     [(class (float-array 0)) seq float-array]
