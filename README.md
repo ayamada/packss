@@ -111,8 +111,10 @@ deserialized => (#<Atom@11a6cc4: 3> #<Atom@11a6cc4: 3>)
 
 ## ChangeLog
 
-- 1.0.1-SNAPSHOT
+- 1.0.1 (2014-04-05)
     - Fix `unpack` array of boolean, byte, short, char
+    - Sync protocol-version from project-version
+    - Improve for cache effiency
 
 - 1.0.0 (2014-03-25)
     - Fix `packable?` incorrectness
