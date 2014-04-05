@@ -106,6 +106,16 @@
     true
     (class-packable? (class obj) user-ext)))
 
+(defn atomically-immutable? [obj]
+  (or
+    (instance? clojure.lang.Named obj)
+    (instance? String obj)
+    (instance? Number obj)
+    (instance? Boolean obj)
+    (instance? Character obj)
+    (and (coll? obj) (not (seq obj))) ; empty-coll?
+    ))
+
 ;;; ----------------------------------------------------------------
 ;;; scanner utility
 
@@ -194,19 +204,22 @@
 (defn obj->idx [src-obj]
   ;; TODO: must be safe from stack overflow
   (let [entries (cache src-obj)]
-    (if-let [idx (when entries
+    (if-let [idx (if (number? entries)
+                   entries
                    (some (fn [[k v]]
                            (and (identical? src-obj k) v))
                          entries))]
       idx
-      (let [idx (count stack)
+      (let [new-idx (count stack)
             scanned (scanner src-obj)
-            cache-entry-old (or entries nil)
-            cache-entry-new (conj cache-entry-old [src-obj idx])]
+            cache-entry-new (if (atomically-immutable? src-obj)
+                              new-idx
+                              (conj (or entries nil) [src-obj new-idx]))]
         (set! cache (assoc cache src-obj cache-entry-new))
-        (set! stack (conj stack (delay (mapping scanned)))) ; reserve to entry
-        (force (stack idx))
-        idx))))
+        (let [new-entry (delay (mapping scanned))]
+          (set! stack (conj stack new-entry)) ; reserve to entry
+          (force new-entry)
+          new-idx)))))
 
 (defn idx->obj [idx]
   ;; TODO: must be safe from stack overflow
