@@ -216,7 +216,12 @@
                               new-idx
                               (conj (or entries nil) [src-obj new-idx]))]
         (set! cache (assoc cache src-obj cache-entry-new))
-        (let [new-entry (delay (mapping scanned))]
+        (let [new-entry (delay
+                          (let [[mapped mtype] (mapping scanned)
+                                mtype (if (string? mtype)
+                                        (obj->idx mtype)
+                                        mtype)]
+                            [mapped mtype]))]
           (set! stack (conj stack new-entry)) ; reserve to entry
           (force new-entry)
           new-idx)))))
@@ -226,6 +231,7 @@
   (if-let [cached (cache idx)]
     cached
     (let [[mapped-obj mtype] (stack idx)
+          mtype (if (number? mtype) (idx->obj mtype) mtype)
           obj (unmapping mapped-obj mtype)]
       (set! cache (assoc cache idx obj))
       obj)))
@@ -262,7 +268,8 @@
       ;; fix mutable objects
       (dotimes [i (count stack)]
         (when-not (zero? i)
-          (let [[mapped-obj mtype] (stack i)]
+          (let [[mapped-obj mtype] (stack i)
+                mtype (if (number? mtype) (idx->obj mtype) mtype)]
             (replacing! (cache i) mtype))))
       ;; return root-obj
       (idx->obj 1))))

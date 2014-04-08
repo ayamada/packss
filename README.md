@@ -103,12 +103,6 @@ deserialized => (#<Atom@11a6cc4: 3> #<Atom@11a6cc4: 3>)
       **Unsafe objects are remained and never checked by default !!!**
 
 
-## Note
-
-- I tried to store `mtype` recursively, but slowed speed and enlarge size.
-  This change was revoked.
-
-
 ## ChangeLog
 
 - 1.0.1 (2014-04-05)
