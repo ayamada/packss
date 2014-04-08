@@ -23,9 +23,9 @@
 
 ;;; ----------------------------------------------------------------
 
-(def current-protocol "PACKSS/1.0")
+(def current-protocol "PACKSS/1.1")
 
-;;; (stack 0) => {:protocol "PACKSS/1.0", ...} ; meta-info
+;;; (stack 0) => {:protocol "PACKSS/1.1", ...} ; meta-info
 ;;; (stack 1) => [mapped-obj obj-type] ; 1 is root
 ;;; (stack 2) => [mapped-obj obj-type] ; 2 and others are children
 ;;; (stack 3) => ...
