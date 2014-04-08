@@ -224,11 +224,17 @@
 (deftest shared-structure-determine-test
   (testing "shared-structure determine test"
     (let [loaded-data (unpack (pack ssd-data user-ext-table) user-ext-table)]
+      (is (= (.x ^Point (:a-1 ssd-data)) 1))
+      (is (= (.x ^Point (:a-2 ssd-data)) 1))
+      (is (= (.x ^Point (:b ssd-data)) 1))
+      (is (= (.x ^Point (:a-1 loaded-data)) 1))
+      (is (= (.x ^Point (:a-2 loaded-data)) 1))
+      (is (= (.x ^Point (:b loaded-data)) 1))
       (set! (.x ^Point (:a-1 ssd-data)) 3)
-      (set! (.x ^Point (:a-1 loaded-data)) 4)
       (is (= (.x ^Point (:a-1 ssd-data)) 3))
       (is (= (.x ^Point (:a-2 ssd-data)) 3))
       (is (= (.x ^Point (:b ssd-data)) 1))
+      (set! (.x ^Point (:a-1 loaded-data)) 4)
       (is (= (.x ^Point (:a-1 loaded-data)) 4))
       (is (= (.x ^Point (:a-2 loaded-data)) 4))
       (is (= (.x ^Point (:b loaded-data)) 1)))))
